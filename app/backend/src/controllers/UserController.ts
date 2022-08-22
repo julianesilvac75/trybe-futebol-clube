@@ -1,13 +1,20 @@
 import { Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
+import ErrorMessages from '../helpers/ErrorMessages';
 import UserService from '../services/UserService';
 
 class UserController {
   static async login(req: Request, res: Response) {
     const { email, password } = req.body;
 
-    const token = await UserService.login(email, password);
+    try {
+      const token = await UserService.login(email, password);
 
-    res.status(200).json(token);
+      return res.status(StatusCodes.OK).json(token);
+    } catch (error) {
+      console.error(error);
+      return res.status(StatusCodes.UNAUTHORIZED).json({ message: ErrorMessages.incorrectField });
+    }
   }
 }
 

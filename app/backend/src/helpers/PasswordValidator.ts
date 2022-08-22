@@ -1,4 +1,5 @@
 import * as Bcrypt from 'bcryptjs';
+import ErrorMessages from './ErrorMessages';
 
 class PasswordValidator {
   static generate(login: string): string {
@@ -7,10 +8,10 @@ class PasswordValidator {
     return hash;
   }
 
-  static validate(login: string, password: string): boolean {
+  static validate(login: string, password: string): void {
     const check = Bcrypt.compareSync(login, password);
-
-    return check;
+    console.log(check);
+    if (!check) throw new Error(ErrorMessages.incorrectField);
   }
 }
 

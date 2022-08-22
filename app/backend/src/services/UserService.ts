@@ -9,12 +9,10 @@ class UserService {
     const { incorrectField } = ErrorMessages;
 
     if (!user) {
-      return { message: incorrectField };
+      throw new Error(incorrectField);
     }
 
-    if (!PasswordValidator.validate(password, user.password)) {
-      return { message: incorrectField };
-    }
+    PasswordValidator.validate(password, user.password);
 
     const token = TokenValidator.generate(email, password);
     return { token };
