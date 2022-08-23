@@ -2,25 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import * as Joi from 'joi';
 import ErrorMessages from '../helpers/ErrorMessages';
-
-const errorMessage = (error: Joi.ValidationErrorItem): {
-  code: number,
-  name: string,
-  message: string } => {
-  if (error?.type.includes('required')) {
-    return {
-      code: StatusCodes.BAD_REQUEST,
-      name: 'Bad Request',
-      message: ErrorMessages.required,
-    };
-  }
-
-  return {
-    code: StatusCodes.UNPROCESSABLE_ENTITY,
-    name: 'Unprocessable Entity',
-    message: ErrorMessages.incorrectField,
-  };
-};
+import CustomError from '../helpers/CustomError';
 
 const loginValidate = (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
@@ -32,11 +14,7 @@ const loginValidate = (req: Request, res: Response, next: NextFunction) => {
 
   const validation = required.validate({ email, password });
 
-  if (validation.error) {
-    const { code, message } = errorMessage(validation.error?.details[0]);
-
-    return res.status(code).json({ message });
-  }
+  if (validation.error) throw new CustomError(StatusCodes.BAD_REQUEST, ErrorMessages.required);
 
   next();
 };

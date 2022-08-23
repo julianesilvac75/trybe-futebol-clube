@@ -1,4 +1,6 @@
 import * as Bcrypt from 'bcryptjs';
+import { StatusCodes } from 'http-status-codes';
+import CustomError from './CustomError';
 import ErrorMessages from './ErrorMessages';
 
 class PasswordValidator {
@@ -11,7 +13,7 @@ class PasswordValidator {
   static validate(login: string, password: string): void {
     const check = Bcrypt.compareSync(login, password);
     console.log(check);
-    if (!check) throw new Error(ErrorMessages.incorrectField);
+    if (!check) throw new CustomError(StatusCodes.UNAUTHORIZED, ErrorMessages.incorrectField);
   }
 }
 

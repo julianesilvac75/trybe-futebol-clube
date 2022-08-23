@@ -1,7 +1,9 @@
+import { StatusCodes } from 'http-status-codes';
 import ErrorMessages from '../helpers/ErrorMessages';
 import User from '../database/models/UserModel';
 import PasswordValidator from '../helpers/PasswordValidator';
 import TokenValidator from '../helpers/TokenValidator';
+import CustomError from '../helpers/CustomError';
 
 class UserService {
   static async login(email: string, password: string) {
@@ -9,7 +11,7 @@ class UserService {
     const { incorrectField } = ErrorMessages;
 
     if (!user) {
-      throw new Error(incorrectField);
+      throw new CustomError(StatusCodes.UNAUTHORIZED, incorrectField);
     }
 
     PasswordValidator.validate(password, user.password);
