@@ -14,7 +14,21 @@ class UserController {
     } catch (e) {
       const { status, message } = e as CustomError;
       console.log(e);
-      res.status(status).json({ message });
+      return res.status(status).json({ message });
+    }
+  }
+
+  static async validate(req: Request, res: Response) {
+    try {
+      const { email } = req.body.data;
+
+      const role = await UserService.getRole(email);
+
+      return res.status(StatusCodes.OK).json({ role });
+    } catch (e) {
+      const { status, message } = e as CustomError;
+      console.log(e);
+      return res.status(status).json({ message });
     }
   }
 }
