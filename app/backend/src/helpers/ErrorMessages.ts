@@ -4,6 +4,7 @@ enum ErrorMessages {
   tokenNotFound = 'Token not found',
   invalidToken = 'Must be a valid token',
   userNotFound = 'User not found',
+  somethingWentWrong = 'Something went wrong',
 }
 
 export default ErrorMessages;
