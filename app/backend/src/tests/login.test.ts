@@ -12,6 +12,7 @@ import { loginMock, tokenMock, userMock } from './helpers';
 import User from '../database/models/UserModel';
 import TokenValidator from '../helpers/TokenValidator';
 import { StatusCodes } from 'http-status-codes';
+import PasswordValidator from '../helpers/PasswordValidator';
 
 chai.use(chaiHttp);
 
@@ -20,6 +21,7 @@ const { expect } = chai;
 describe('On the /login route', () => {
   describe('when sent valid data', () => {
     beforeEach(() => {
+      sinon.stub(PasswordValidator, 'validate');
       sinon.stub(User, 'findOne').resolves(userMock as User);
     });
 
@@ -28,6 +30,7 @@ describe('On the /login route', () => {
     });
 
     it('should return status 200', async () => {
+
       const response = await chai.request(app)
         .post('/login')
         .send(loginMock);
