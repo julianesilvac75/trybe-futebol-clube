@@ -6,6 +6,7 @@ enum ErrorMessages {
   userNotFound = 'User not found',
   somethingWentWrong = 'Something went wrong',
   noTeamsFound = 'No teams found',
+  noMatchesFound = 'No matches found',
 }
 
 export default ErrorMessages;
