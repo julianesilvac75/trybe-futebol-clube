@@ -20,6 +20,21 @@ class TeamController {
       throw new CustomError(StatusCodes.INTERNAL_SERVER_ERROR, ErrorMessages.somethingWentWrong);
     }
   }
+
+  static async findAll(req: Request, res: Response) {
+    try {
+      const teams = await TeamService.findAll();
+
+      if (!teams) {
+        return res.status(StatusCodes.NOT_FOUND).json({ message: ErrorMessages.noTeamsFound });
+      }
+
+      return res.status(StatusCodes.OK).json(teams);
+    } catch (e) {
+      console.log(e);
+      throw new CustomError(StatusCodes.INTERNAL_SERVER_ERROR, ErrorMessages.somethingWentWrong);
+    }
+  }
 }
 
 export default TeamController;
