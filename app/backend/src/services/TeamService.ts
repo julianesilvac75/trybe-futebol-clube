@@ -15,6 +15,17 @@ class TeamService {
       throw new CustomError(StatusCodes.INTERNAL_SERVER_ERROR, ErrorMessages.somethingWentWrong);
     }
   }
+
+  static async findAll(): Promise<ITeam[]> {
+    try {
+      const teams = await Team.findAll();
+
+      return teams as ITeam[];
+    } catch (e) {
+      console.log(e);
+      throw new CustomError(StatusCodes.INTERNAL_SERVER_ERROR, ErrorMessages.noTeamsFound);
+    }
+  }
 }
 
 export default TeamService;
