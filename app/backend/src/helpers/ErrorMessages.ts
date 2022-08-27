@@ -5,6 +5,7 @@ enum ErrorMessages {
   invalidToken = 'Must be a valid token',
   userNotFound = 'User not found',
   somethingWentWrong = 'Something went wrong',
+  noTeamsFound = 'No teams found',
 }
 
 export default ErrorMessages;
