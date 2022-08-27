@@ -10,6 +10,10 @@ class TeamController {
       const { id } = req.params;
       const team = await TeamService.findById(parseInt(id, 10));
 
+      if (!team) {
+        return res.status(StatusCodes.NOT_FOUND).json({ message: ErrorMessages.noTeamsFound });
+      }
+
       return res.status(StatusCodes.OK).json(team);
     } catch (e) {
       console.log(e);
