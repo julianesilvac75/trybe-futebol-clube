@@ -10,9 +10,9 @@ const { expect } = chai;
 import { app } from '../app';
 import Team from '../database/models/TeamModel';
 import ITeam from '../interfaces/ITeam';
-import { teamMock } from './helpers';
 import User from '../database/models/UserModel';
 import { StatusCodes } from 'http-status-codes';
+import { teamMock } from './helpers/teams';
 
 describe('On the /teams route', () => {
   describe('when getting all teams', () => {

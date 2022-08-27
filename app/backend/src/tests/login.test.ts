@@ -8,11 +8,11 @@ import { app } from '../app';
 // import Example from '../database/models/ExampleModel';
 
 import { Response } from 'superagent';
-import { loginMock, tokenMock, userMock } from './helpers';
 import User from '../database/models/UserModel';
 import TokenValidator from '../helpers/TokenValidator';
 import { StatusCodes } from 'http-status-codes';
 import PasswordValidator from '../helpers/PasswordValidator';
+import { userMock, loginMock, tokenMock } from './helpers/login';
 
 chai.use(chaiHttp);
 

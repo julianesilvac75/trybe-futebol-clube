@@ -1,13 +1,12 @@
-import ITeam from "../../interfaces/ITeam";
 import IUser from "../../interfaces/IUser";
 
 export const tokenMock = {
-    token: 'new-token'
+  token: 'new-token'
 };
 
 export const loginMock = {
-    email: 'admin@admin.com',
-    password: 'secret_admin'
+  email: 'admin@admin.com',
+  password: 'secret_admin'
 };
 
 export const userMock: IUser = {
@@ -17,8 +16,3 @@ export const userMock: IUser = {
   email: 'admin@admin.com',
   password: '$2a$08$xi.Hxk1czAO0nZR..B393u10aED0RQ1N3PAEXQ7HxtLjKPEZBu.PW',
 }
-
-export const teamMock: ITeam = {
-  id: 1,
-  teamName: 'Avaí/Kindermann',
-};
