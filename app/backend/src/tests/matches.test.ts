@@ -146,6 +146,12 @@ describe('On the /matches route', () => {
         });
       
       expect(response.body).to.be.deep.equal({ message: ErrorMessages.invalidData });
-    })
+    });
+  });
+
+  describe('when trying to atualize status of a match', () => {
+    it('should return status 200', async () => {
+
+    });
   });
 });
