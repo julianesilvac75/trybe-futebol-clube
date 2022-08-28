@@ -19,6 +19,24 @@ class MatchController {
       throw new CustomError(StatusCodes.INTERNAL_SERVER_ERROR, ErrorMessages.somethingWentWrong);
     }
   }
+
+  static async findByStatus(req: Request, res: Response) {
+    try {
+      const { inProgress } = req.query;
+
+      const matches = await MatchService.findByStatus(inProgress === 'true');
+
+      if (!matches) {
+        return res.status(StatusCodes.NOT_FOUND)
+          .json({ message: ErrorMessages.noMatchesFound });
+      }
+
+      return res.status(StatusCodes.OK).json(matches);
+    } catch (e) {
+      console.log(e);
+      throw new CustomError(StatusCodes.INTERNAL_SERVER_ERROR, ErrorMessages.somethingWentWrong);
+    }
+  }
 }
 
 export default MatchController;
