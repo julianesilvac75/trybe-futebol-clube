@@ -8,6 +8,8 @@ enum ErrorMessages {
   noTeamsFound = 'No teams found',
   noMatchesFound = 'No matches found',
   invalidParameters = 'Invalid parameters',
+  invalidData = 'Invalid data',
+  finished = 'Finished',
 }
 
 export default ErrorMessages;
