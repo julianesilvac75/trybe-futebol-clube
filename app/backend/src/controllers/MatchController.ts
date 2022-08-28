@@ -27,21 +27,19 @@ class MatchController {
     }
   }
 
-  // static async findByStatus(req: Request, res: Response) {
-  //   try {
-  //     const matches = await MatchService.findByStatus(inProgress === 'true');
+  static async create(req: Request, res: Response) {
+    try {
+      const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = req.body;
 
-  //     if (!matches) {
-  //       return res.status(StatusCodes.NOT_FOUND)
-  //         .json({ message: ErrorMessages.noMatchesFound });
-  //     }
+      const newMatch = await MatchService.create({
+        homeTeam, awayTeam, homeTeamGoals, awayTeamGoals });
 
-  //     return res.status(StatusCodes.OK).json(matches);
-  //   } catch (e) {
-  //     console.log(e);
-  //     throw new CustomError(StatusCodes.INTERNAL_SERVER_ERROR, ErrorMessages.somethingWentWrong);
-  //   }
-  // }
+      return res.status(StatusCodes.CREATED).json(newMatch);
+    } catch (e) {
+      console.log(e);
+      throw new CustomError(StatusCodes.INTERNAL_SERVER_ERROR, ErrorMessages.somethingWentWrong);
+    }
+  }
 }
 
 export default MatchController;
