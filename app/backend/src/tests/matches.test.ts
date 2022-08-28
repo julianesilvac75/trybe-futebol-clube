@@ -16,6 +16,7 @@ import {
   createdMatchMock,
   newMatchMock
 } from './helpers/matches';
+import ErrorMessages from '../helpers/ErrorMessages';
 
 describe('On the /matches route', () => {
   describe('when searched for all matches', () => {
@@ -122,5 +123,29 @@ describe('On the /matches route', () => {
 
       expect(response.body).to.be.deep.equal(createdMatchMock);
     });
+  });
+
+  describe('when trying to save a new match with invalid data', () => {
+    it('should return status 400', async () => {
+      const response = await chai.request(app)
+        .post('/matches')
+        .send({
+          homeTeam: 16,
+          homeTeamGoals: 1,
+        });
+      
+      expect(response.status).to.be.equal(StatusCodes.BAD_REQUEST);
+    });
+
+    it('shoud return error message', async () => {
+      const response = await chai.request(app)
+        .post('/matches')
+        .send({
+          homeTeam: 16,
+          homeTeamGoals: 1,
+        });
+      
+      expect(response.body).to.be.deep.equal({ message: ErrorMessages.invalidData });
+    })
   });
 });
