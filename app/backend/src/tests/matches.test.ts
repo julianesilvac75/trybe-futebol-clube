@@ -48,16 +48,16 @@ describe('On the /matches route', () => {
 
     it('should return status 200', async () => {
       const response = await chai.request(app)
-        .get('matches')
-        .query({ inProgress: true });
+        .get('/matches')
+        .query({ inProgress: 'true' });
       
       expect(response.status).to.be.equal(StatusCodes.OK);
     });
 
     it('should return only in progress matches', async () => {
       const response = await chai.request(app)
-        .get('matches')
-        .query({ inProgress: true });
+        .get('/matches')
+        .query({ inProgress: 'true' });
       
       expect(response.body).to.be.deep.equal([inProgressMatchMock]);
       expect(response.body[0]).to.have.property('inProgress');
