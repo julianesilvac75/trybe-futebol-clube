@@ -1,10 +1,6 @@
-interface IMatch {
-  id: number,
-  homeTeam: number,
-  homeTeamGoals: number,
-  awayTeam: number,
-  awayTeamGoals: number,
-  inProgress: boolean,
+import ICreatedMatch from './ICreatedMatch';
+
+interface IMatch extends ICreatedMatch {
   teamHome: {
     teamName: string
   },

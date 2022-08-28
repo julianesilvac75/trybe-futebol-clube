@@ -7,10 +7,15 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
+import { StatusCodes } from 'http-status-codes';
 import { app } from '../app';
 import Match from '../database/models/MatchModel';
-import { matchMock, inProgressMatchMock } from './helpers/matches';
-import { StatusCodes } from 'http-status-codes';
+import {
+  matchMock,
+  inProgressMatchMock,
+  createdMatchMock,
+  newMatchMock
+} from './helpers/matches';
 
 describe('On the /matches route', () => {
   describe('when searched for all matches', () => {
@@ -92,4 +97,30 @@ describe('On the /matches route', () => {
       expect(response.body[0].inProgress).to.be.equal(false);
     });
   });
-})
+
+  describe('when trying to save a new match with valid data', () => {
+    beforeEach(() => {
+      sinon.stub(Match, 'create').resolves(createdMatchMock as Match);
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it('should return status 201', async () => {
+      const response = await chai.request(app)
+        .post('/matches')
+        .send(newMatchMock);
+      
+      expect(response.status).to.be.equal(StatusCodes.CREATED);
+    });
+
+    it('should return a new in progress match', async () => {
+      const response = await chai.request(app)
+        .post('/matches')
+        .send(newMatchMock);
+
+      expect(response.body).to.be.deep.equal(createdMatchMock);
+    });
+  });
+});
