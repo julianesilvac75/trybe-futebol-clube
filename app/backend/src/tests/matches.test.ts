@@ -64,4 +64,32 @@ describe('On the /matches route', () => {
       expect(response.body[0].inProgress).to.be.equal(true);
     });
   });
+
+  describe('when searched for finished matches', () => { 
+    beforeEach(() => {
+      sinon.stub(Match, 'findAll').resolves([matchMock as Match]);
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it('should return status 200', async () => {
+      const response = await chai.request(app)
+        .get('/matches')
+        .query({ inProgress: 'false' });
+      
+      expect(response.status).to.be.equal(StatusCodes.OK);
+    });
+
+    it('should return only finished matches', async () => {
+      const response = await chai.request(app)
+        .get('/matches')
+        .query({ inProgress: 'false' });
+      
+      expect(response.body).to.be.deep.equal([matchMock]);
+      expect(response.body[0]).to.have.property('inProgress');
+      expect(response.body[0].inProgress).to.be.equal(false);
+    });
+  });
 })
