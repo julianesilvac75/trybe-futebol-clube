@@ -6,13 +6,19 @@ import Match from '../database/models/MatchModel';
 import Team from '../database/models/TeamModel';
 
 class MatchService {
-  static async findAll(): Promise<IMatch[]> {
+  static async findAll(status: boolean | null = null): Promise<IMatch[]> {
     try {
-      const matches = await Match.findAll({
-        include: [
-          { model: Team, as: 'teamHome', attributes: ['teamName'] },
-          { model: Team, as: 'teamAway', attributes: ['teamName'] },
-        ] });
+      let matches;
+
+      if (status) {
+        matches = await this.findByStatus(status);
+      } else {
+        matches = await Match.findAll({
+          include: [
+            { model: Team, as: 'teamHome', attributes: ['teamName'] },
+            { model: Team, as: 'teamAway', attributes: ['teamName'] },
+          ] });
+      }
 
       return matches as IMatch[];
     } catch (e) {
