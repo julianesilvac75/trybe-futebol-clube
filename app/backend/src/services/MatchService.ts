@@ -6,6 +6,7 @@ import Match from '../database/models/MatchModel';
 import Team from '../database/models/TeamModel';
 import INewMatch from '../interfaces/INewMatch';
 import ICreatedMatch from '../interfaces/ICreatedMatch';
+import TeamService from './TeamService';
 
 class MatchService {
   static async findAll(status: boolean | null = null): Promise<IMatch[]> {
@@ -60,8 +61,8 @@ class MatchService {
     try {
       const { homeTeam, awayTeam } = payload;
 
-      const team1 = await this.findById(homeTeam);
-      const team2 = await this.findById(awayTeam);
+      const team1 = await TeamService.findById(homeTeam);
+      const team2 = await TeamService.findById(awayTeam);
 
       if (!team1 || !team2) {
         throw new CustomError(StatusCodes.NOT_FOUND, ErrorMessages.noTeamWithSuchId);

@@ -19,6 +19,7 @@ import {
   sameTeamsMatchMock,
 } from './helpers/matches';
 import ErrorMessages from '../helpers/ErrorMessages';
+import Team from '../database/models/TeamModel';
 
 describe('On the /matches route', () => {
   describe('when searched for all matches', () => {
@@ -222,7 +223,7 @@ describe('On the /matches route', () => {
 
   describe(`when trying to create a match with a team that doesn't exist`, () => {
     beforeEach(() => {
-      sinon.stub(Match, 'findByPk').resolves(undefined);
+      sinon.stub(Team, 'findByPk').resolves(undefined);
     });
 
     afterEach(() => {
