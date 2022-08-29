@@ -10,6 +10,7 @@ enum ErrorMessages {
   invalidParameters = 'Invalid parameters',
   invalidData = 'Invalid data',
   twoEqualTeams = 'It is not possible to create a match with two equal teams',
+  noTeamWithSuchId = 'There is no team with such id!',
 }
 
 export default ErrorMessages;

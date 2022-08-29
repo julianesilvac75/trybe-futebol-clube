@@ -219,4 +219,30 @@ describe('On the /matches route', () => {
       expect(response.body).to.be.deep.equal({ message: ErrorMessages.twoEqualTeams });
     });
   });
+
+  describe(`when trying to create a match with a team that doesn't exist`, () => {
+    beforeEach(() => {
+      sinon.stub(Match, 'findByPk').resolves(undefined);
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it('should return status 404', async () => {
+      const response = await chai.request(app)
+        .post('/matches')
+        .send(newMatchMock);
+      
+      expect(response.status).to.be.equal(StatusCodes.NOT_FOUND);
+    });
+
+    it('should return a error message',async () => {
+      const response = await chai.request(app)
+        .post('/matches')
+        .send(newMatchMock);
+
+      expect(response.body).to.be.deep.equal({ message: ErrorMessages.noTeamWithSuchId });
+    });
+  });
 });
