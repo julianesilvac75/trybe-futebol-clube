@@ -44,6 +44,32 @@ describe('On the /matches route', () => {
     });
   });
 
+  describe('when searched for a match by id', () => {
+    const id = 1;
+
+    beforeEach(()=> {
+      sinon.stub(Match, 'findByPk').resolves(createdMatchMock as Match);
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it('should return status 200', async () => {
+      const response = await chai.request(app)
+        .get(`/matches/${id}`);
+
+      expect(response.status).to.be.equal(StatusCodes.OK);
+    });
+
+    it('should return the match with the right id', async () => {
+      const response = await chai.request(app)
+        .get(`/matches/${id}`);
+      
+      expect(response.body.id).to.be.equal(id);
+    });
+  });
+
   describe('when searched for in progress matches', () => { 
     beforeEach(() => {
       sinon.stub(Match, 'findAll').resolves([inProgressMatchMock as Match]);
