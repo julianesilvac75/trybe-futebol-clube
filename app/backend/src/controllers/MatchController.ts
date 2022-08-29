@@ -27,6 +27,23 @@ class MatchController {
     }
   }
 
+  static async findById(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const match = await MatchService.findById(parseInt(id, 10));
+
+      if (!match) {
+        return res.status(StatusCodes.NOT_FOUND).json({ message: ErrorMessages.noMatchesFound });
+      }
+
+      return res.status(StatusCodes.OK).json(match);
+    } catch (e) {
+      console.log(e);
+      throw new CustomError(StatusCodes.INTERNAL_SERVER_ERROR, ErrorMessages.somethingWentWrong);
+    }
+  }
+
   static async create(req: Request, res: Response) {
     try {
       const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = req.body;
