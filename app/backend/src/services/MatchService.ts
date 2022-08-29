@@ -94,7 +94,6 @@ class MatchService {
         { inProgress: false },
       );
 
-      console.log(updated);
       return updated;
     } catch (e) {
       console.log(e);

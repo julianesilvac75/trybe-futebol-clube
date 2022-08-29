@@ -57,6 +57,21 @@ class MatchController {
       throw new CustomError(StatusCodes.INTERNAL_SERVER_ERROR, ErrorMessages.somethingWentWrong);
     }
   }
+
+  static async updateStatus(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const updated = await MatchService.updateStatus(parseInt(id, 10));
+
+      console.log(updated);
+
+      return res.status(StatusCodes.OK).json({ message: 'Finished' });
+    } catch (e) {
+      console.log(e);
+      throw new CustomError(StatusCodes.INTERNAL_SERVER_ERROR, ErrorMessages.somethingWentWrong);
+    }
+  }
 }
 
 export default MatchController;
