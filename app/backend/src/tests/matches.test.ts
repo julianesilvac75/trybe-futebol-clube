@@ -15,6 +15,7 @@ import {
   inProgressMatchMock,
   createdMatchMock,
   newMatchMock,
+  updatedMatchMock,
 } from './helpers/matches';
 import ErrorMessages from '../helpers/ErrorMessages';
 
@@ -151,13 +152,13 @@ describe('On the /matches route', () => {
 
   describe('when trying to atualize status of a match', () => {
     const id = 1;
-    // beforeEach(() => {
-    //   sinon.stub(Match, 'update').resolves([1, updatedMatchMock[] as Match[]]);
-    // });
+    beforeEach(() => {
+      sinon.stub(Match, 'update');
+    });
 
-    // afterEach(() => {
-    //   sinon.restore();
-    // });
+    afterEach(() => {
+      sinon.restore();
+    });
 
     it('should return status 200', async () => {
       const response = await chai.request(app)
@@ -167,20 +168,10 @@ describe('On the /matches route', () => {
     });
 
     it('should return the match with the actualized status', async () => {
-      const response1 = await chai.request(app)
-        .get(`/matches/${id}`);
-      
-      expect(response1.body.inProgress).to.be.equal(true);
-
-      const response2 = await chai.request(app)
+      const response = await chai.request(app)
         .patch(`/matches/${id}/finish`);
       
-      expect(response2.body).to.be.deep.equal({ message: ErrorMessages.finished });
-
-      const response3 = await chai.request(app)
-        .get(`/matches/${id}`);
-      
-        expect(response1.body.inProgress).to.be.equal(false);
+      expect(response.body).to.be.deep.equal({ message: ErrorMessages.finished });
     });
   });
 });
