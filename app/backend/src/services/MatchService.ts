@@ -29,6 +29,17 @@ class MatchService {
     }
   }
 
+  static async findById(id: number): Promise<IMatch> {
+    try {
+      const match = await Match.findByPk(id);
+
+      return match as IMatch;
+    } catch (e) {
+      console.log(e);
+      throw new CustomError(StatusCodes.INTERNAL_SERVER_ERROR, ErrorMessages.somethingWentWrong);
+    }
+  }
+
   static async findByStatus(status: boolean): Promise<IMatch[]> {
     try {
       const matches = await Match.findAll({
