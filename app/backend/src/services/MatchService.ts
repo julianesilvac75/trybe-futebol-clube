@@ -57,7 +57,7 @@ class MatchService {
     }
   }
 
-  static async create(payload: INewMatch): Promise<ICreatedMatch> {
+  static async create(payload: INewMatch): Promise<ICreatedMatch | null> {
     try {
       const { homeTeam, awayTeam } = payload;
 
@@ -65,7 +65,7 @@ class MatchService {
       const team2 = await TeamService.findById(awayTeam);
 
       if (!team1 || !team2) {
-        throw new CustomError(StatusCodes.NOT_FOUND, ErrorMessages.noTeamWithSuchId);
+        return null;
       }
 
       const newMatch = await Match.create({

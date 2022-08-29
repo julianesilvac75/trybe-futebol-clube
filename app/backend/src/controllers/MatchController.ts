@@ -51,6 +51,10 @@ class MatchController {
       const newMatch = await MatchService.create({
         homeTeam, awayTeam, homeTeamGoals, awayTeamGoals });
 
+      if (!newMatch) {
+        return res.status(StatusCodes.NOT_FOUND).json({ message: ErrorMessages.noTeamWithSuchId });
+      }
+
       return res.status(StatusCodes.CREATED).json(newMatch);
     } catch (e) {
       console.log(e);
