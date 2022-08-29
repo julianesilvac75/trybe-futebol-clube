@@ -9,7 +9,7 @@ enum ErrorMessages {
   noMatchesFound = 'No matches found',
   invalidParameters = 'Invalid parameters',
   invalidData = 'Invalid data',
-  finished = 'Finished',
+  twoEqualTeams = 'It is not possible to create a match with two equal teams',
 }
 
 export default ErrorMessages;

@@ -57,3 +57,10 @@ export const updatedMatchMock: ICreatedMatch= {
   awayTeamGoals: 1,
   inProgress: false,
 }
+
+export const sameTeamsMatchMock: INewMatch = {
+  homeTeam: 16,
+  homeTeamGoals: 1,
+  awayTeam: 16,
+  awayTeamGoals: 1,
+}

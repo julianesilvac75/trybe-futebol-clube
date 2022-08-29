@@ -16,6 +16,7 @@ import {
   createdMatchMock,
   newMatchMock,
   updatedMatchMock,
+  sameTeamsMatchMock,
 } from './helpers/matches';
 import ErrorMessages from '../helpers/ErrorMessages';
 
@@ -197,7 +198,25 @@ describe('On the /matches route', () => {
       const response = await chai.request(app)
         .patch(`/matches/${id}/finish`);
       
-      expect(response.body).to.be.deep.equal({ message: ErrorMessages.finished });
+      expect(response.body).to.be.deep.equal({ message: 'Finished' });
+    });
+  });
+
+  describe('when trying to create a match with two equal teams', () => {
+    it('should return status 401', async () => {
+      const response = await chai.request(app)
+        .post('/matches')
+        .send(sameTeamsMatchMock);
+
+      expect(response.status).to.be.equal(StatusCodes.UNAUTHORIZED);
+    });
+
+    it('should return a error message', async () => {
+      const response = await chai.request(app)
+        .post('/matches')
+        .send(sameTeamsMatchMock);
+      
+      expect(response.body).to.be.deep.equal({ message: ErrorMessages.twoEqualTeams });
     });
   });
 });
