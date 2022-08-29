@@ -6,5 +6,6 @@ const MatchRouter = Router();
 
 MatchRouter.get('/', MatchController.findAll);
 MatchRouter.post('/', createMatchValidate, MatchController.create);
+MatchRouter.get('/:id', MatchController.findById);
 
 export default MatchRouter;
