@@ -82,34 +82,45 @@ class MatchService {
 
   static async update(id: number, payload: object) {
     try {
+      const match = await this.findById(id);
+
+      if (!match) {
+        return false;
+      }
+
       const updated = await Match.update(
         payload,
         { where: { id } },
       );
 
-      return updated;
-    } catch (e) {
-      console.log(e);
-      throw new CustomError(StatusCodes.INTERNAL_SERVER_ERROR, ErrorMessages.somethingWentWrong);
-    }
-  }
-
-  static async updateStatus(id: number) {
-    try {
-      // implementar logica pra verificar se o match foi mesmo atualizado
-      // tipar funcao
-
-      const updated = await this.update(
-        id,
-        { inProgress: false },
-      );
+      if (!updated[0]) {
+        return false;
+      }
 
       return updated;
     } catch (e) {
       console.log(e);
+      console.log('erro da service');
       throw new CustomError(StatusCodes.INTERNAL_SERVER_ERROR, ErrorMessages.somethingWentWrong);
     }
   }
+
+  // static async updateStatus(id: number) {
+  //   try {
+  //     // implementar logica pra verificar se o match foi mesmo atualizado
+  //     // tipar funcao
+
+  //     const updated = await this.update(
+  //       id,
+  //       { inProgress: false },
+  //     );
+
+  //     return updated;
+  //   } catch (e) {
+  //     console.log(e);
+  //     throw new CustomError(StatusCodes.INTERNAL_SERVER_ERROR, ErrorMessages.somethingWentWrong);
+  //   }
+  // }
 }
 
 export default MatchService;

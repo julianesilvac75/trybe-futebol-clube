@@ -62,17 +62,26 @@ class MatchController {
     }
   }
 
-  static async updateStatus(req: Request, res: Response) {
+  static async update(req: Request, res: Response) {
     try {
       const { id } = req.params;
 
-      const updated = await MatchService.updateStatus(parseInt(id, 10));
+      const { homeTeamGoals, awayTeamGoals } = req.body;
+      let updated;
+      if (!homeTeamGoals && !awayTeamGoals) {
+        updated = await MatchService.update(parseInt(id, 10), { inProgress: false });
+      } else {
+        updated = await MatchService.update(parseInt(id, 10), { homeTeamGoals, awayTeamGoals });
+      }
 
-      console.log(updated);
+      if (!updated) {
+        return res.status(StatusCodes.NOT_FOUND).json({ message: ErrorMessages.noMatchesFound });
+      }
 
       return res.status(StatusCodes.OK).json({ message: 'Finished' });
     } catch (e) {
       console.log(e);
+      console.log('erro do controller');
       throw new CustomError(StatusCodes.INTERNAL_SERVER_ERROR, ErrorMessages.somethingWentWrong);
     }
   }
