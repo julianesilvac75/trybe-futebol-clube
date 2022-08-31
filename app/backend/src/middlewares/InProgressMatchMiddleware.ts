@@ -5,6 +5,8 @@ import ErrorMessages from '../helpers/ErrorMessages';
 const InProgressMatchMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const { inProgress } = req.query;
 
+  console.log(inProgress);
+
   if (inProgress && inProgress !== 'true' && inProgress !== 'false') {
     return res.status(StatusCodes.BAD_REQUEST)
       .json({ message: ErrorMessages.invalidParameters });

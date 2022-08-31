@@ -76,7 +76,7 @@ describe('On the /matches route', () => {
     });
   });
 
-  describe('when searched for in progress matches', () => { 
+  describe('when searched for matches by their status', () => { 
     beforeEach(() => {
       sinon.stub(Match, 'findAll').resolves([inProgressMatchMock as Match]);
     });
@@ -101,6 +101,24 @@ describe('On the /matches route', () => {
       expect(response.body).to.be.deep.equal([inProgressMatchMock]);
       expect(response.body[0]).to.have.property('inProgress');
       expect(response.body[0].inProgress).to.be.equal(true);
+    });
+  });
+
+  describe('when searched for matches by their status with invalid params', () => {
+    it('should return status 400', async () => {
+      const response = await chai.request(app)
+        .get('/matches')
+        .query({ inProgress: 'invalid' });
+      
+      expect(response.status).to.be.equal(StatusCodes.BAD_REQUEST);
+    });
+
+    it('should return error message', async () => {
+      const response = await chai.request(app)
+        .get('/matches')
+        .query({ inProgress: 'invalid' });
+
+      expect(response.body).to.be.deep.equal({ message: ErrorMessages.invalidParameters})
     });
   });
 
