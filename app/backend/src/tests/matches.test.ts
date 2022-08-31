@@ -276,4 +276,31 @@ describe('On the /matches route', () => {
       expect(response.body).to.be.deep.equal({ message: ErrorMessages.noTeamWithSuchId });
     });
   });
+
+  describe('when trying to update info about a match', () => {
+    const id = 1;
+    beforeEach(() => {
+      sinon.stub(Match, 'update');
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it('should return status 200', async () => {
+      const response = await chai.request(app)
+        .patch(`/matches/${id}`)
+        .send(updatedMatchMock);
+
+      expect(response.status).to.be.equal(StatusCodes.OK);
+    });
+
+    it('should return success message', async () => {
+      const response = await chai.request(app)
+        .patch(`/matches/${id}`)
+        .send(updatedMatchMock);
+
+      expect(response.body).to.be.deep.equal({ message: 'Finished' });
+    });
+  });
 });

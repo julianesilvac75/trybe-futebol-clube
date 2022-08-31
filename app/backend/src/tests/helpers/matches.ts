@@ -72,3 +72,8 @@ export const jwtPayloadMock: JwtPayload = {
   iat: 1661958778,
   exp: 1662563578,
 }
+
+export const updateMatchMock = {
+  homeTeamGoals: 3,
+  awayTeamGoals: 1
+}
