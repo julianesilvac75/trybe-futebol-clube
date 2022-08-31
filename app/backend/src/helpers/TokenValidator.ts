@@ -19,6 +19,7 @@ class TokenValidator {
 
   static validate(token: string) {
     const check = Jwt.verify(token, jwtSecret);
+
     return check;
   }
 }

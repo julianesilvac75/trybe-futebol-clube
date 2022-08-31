@@ -1,6 +1,8 @@
+import { JwtPayload } from 'jsonwebtoken';
 import ICreatedMatch from '../../interfaces/ICreatedMatch';
 import IMatch from '../../interfaces/IMatch';
 import INewMatch from '../../interfaces/INewMatch';
+import { loginMock } from './login';
 
 export const matchMock: IMatch = {
   id: 1,
@@ -63,4 +65,10 @@ export const sameTeamsMatchMock: INewMatch = {
   homeTeamGoals: 1,
   awayTeam: 16,
   awayTeamGoals: 1,
+}
+
+export const jwtPayloadMock: JwtPayload = {
+  data: loginMock,
+  iat: 1661958778,
+  exp: 1662563578,
 }

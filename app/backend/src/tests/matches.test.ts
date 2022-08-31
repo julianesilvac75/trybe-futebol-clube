@@ -1,5 +1,6 @@
 import * as sinon from 'sinon';
 import * as chai from 'chai';
+import * as Jwt from 'jsonwebtoken';
 // @ts-ignore
 import chaiHttp = require('chai-http');
 
@@ -17,9 +18,12 @@ import {
   newMatchMock,
   updatedMatchMock,
   sameTeamsMatchMock,
+  jwtPayloadMock,
 } from './helpers/matches';
 import ErrorMessages from '../helpers/ErrorMessages';
 import Team from '../database/models/TeamModel';
+import { loginMock } from './helpers/login';
+import TokenValidator from '../helpers/TokenValidator';
 
 describe('On the /matches route', () => {
   describe('when searched for all matches', () => {
@@ -131,6 +135,7 @@ describe('On the /matches route', () => {
   describe('when trying to save a new match with valid data', () => {
     beforeEach(() => {
       sinon.stub(Match, 'create').resolves(createdMatchMock as Match);
+      sinon.stub(TokenValidator, 'validate').returns(jwtPayloadMock as Jwt.JwtPayload);
     });
 
     afterEach(() => {
@@ -140,7 +145,8 @@ describe('On the /matches route', () => {
     it('should return status 201', async () => {
       const response = await chai.request(app)
         .post('/matches')
-        .send(newMatchMock);
+        .send(newMatchMock)
+        .set('authorization', 'valid-token');
       
       expect(response.status).to.be.equal(StatusCodes.CREATED);
     });
@@ -148,20 +154,30 @@ describe('On the /matches route', () => {
     it('should return a new in progress match', async () => {
       const response = await chai.request(app)
         .post('/matches')
-        .send(newMatchMock);
+        .send(newMatchMock)
+        .set('authorization', 'valid-token');
 
       expect(response.body).to.be.deep.equal(createdMatchMock);
     });
   });
 
   describe('when trying to save a new match with invalid data', () => {
+    beforeEach(() => {
+      sinon.stub(TokenValidator, 'validate').returns(jwtPayloadMock as Jwt.JwtPayload);
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
     it('should return status 400', async () => {
       const response = await chai.request(app)
         .post('/matches')
         .send({
           homeTeam: 16,
           homeTeamGoals: 1,
-        });
+        })
+        .set('authorization', 'valid-token');
       
       expect(response.status).to.be.equal(StatusCodes.BAD_REQUEST);
     });
@@ -172,7 +188,8 @@ describe('On the /matches route', () => {
         .send({
           homeTeam: 16,
           homeTeamGoals: 1,
-        });
+        })
+        .set('authorization', 'valid-token');
       
       expect(response.body).to.be.deep.equal({ message: ErrorMessages.invalidData });
     });
@@ -204,10 +221,19 @@ describe('On the /matches route', () => {
   });
 
   describe('when trying to create a match with two equal teams', () => {
+    beforeEach(() => {
+      sinon.stub(TokenValidator, 'validate').returns(jwtPayloadMock as Jwt.JwtPayload);
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
     it('should return status 401', async () => {
       const response = await chai.request(app)
         .post('/matches')
-        .send(sameTeamsMatchMock);
+        .send(sameTeamsMatchMock)
+        .set('authorization', 'valid-token');
 
       expect(response.status).to.be.equal(StatusCodes.UNAUTHORIZED);
     });
@@ -215,7 +241,8 @@ describe('On the /matches route', () => {
     it('should return a error message', async () => {
       const response = await chai.request(app)
         .post('/matches')
-        .send(sameTeamsMatchMock);
+        .send(sameTeamsMatchMock)
+        .set('authorization', 'valid-token');
       
       expect(response.body).to.be.deep.equal({ message: ErrorMessages.twoEqualTeams });
     });
@@ -223,6 +250,7 @@ describe('On the /matches route', () => {
 
   describe(`when trying to create a match with a team that doesn't exist`, () => {
     beforeEach(() => {
+      sinon.stub(TokenValidator, 'validate').returns(jwtPayloadMock as Jwt.JwtPayload);
       sinon.stub(Team, 'findByPk').resolves(undefined);
     });
 
@@ -233,7 +261,8 @@ describe('On the /matches route', () => {
     it('should return status 404', async () => {
       const response = await chai.request(app)
         .post('/matches')
-        .send(newMatchMock);
+        .send(newMatchMock)
+        .set('authorization', 'valid-token');
       
       expect(response.status).to.be.equal(StatusCodes.NOT_FOUND);
     });
@@ -241,7 +270,8 @@ describe('On the /matches route', () => {
     it('should return a error message',async () => {
       const response = await chai.request(app)
         .post('/matches')
-        .send(newMatchMock);
+        .send(newMatchMock)
+        .set('authorization', 'valid-token');
 
       expect(response.body).to.be.deep.equal({ message: ErrorMessages.noTeamWithSuchId });
     });

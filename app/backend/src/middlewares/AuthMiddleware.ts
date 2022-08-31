@@ -13,7 +13,6 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     }
 
     const user = TokenValidator.validate(authorization) as JwtPayload;
-    console.log(user);
 
     req.body = {
       ...req.body,
