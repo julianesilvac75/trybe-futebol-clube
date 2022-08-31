@@ -26,6 +26,12 @@ class TeamService {
       throw new CustomError(StatusCodes.INTERNAL_SERVER_ERROR, ErrorMessages.somethingWentWrong);
     }
   }
+
+  static async getName(id: number) {
+    const team = await this.findById(id);
+
+    return team.teamName;
+  }
 }
 
 export default TeamService;
