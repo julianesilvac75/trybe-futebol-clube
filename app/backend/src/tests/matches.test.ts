@@ -195,10 +195,11 @@ describe('On the /matches route', () => {
     });
   });
 
-  describe('when trying to atualize status of a match', () => {
+  describe('when trying to update status of a match', () => {
     const id = 1;
     beforeEach(() => {
-      sinon.stub(Match, 'update');
+      sinon.stub(Match, 'findByPk').resolves(inProgressMatchMock as Match);
+      sinon.stub(Match, 'update').resolves([1, [inProgressMatchMock as Match]]);
     });
 
     afterEach(() => {
@@ -212,7 +213,7 @@ describe('On the /matches route', () => {
       expect(response.status).to.be.equal(StatusCodes.OK);
     });
 
-    it('should return the match with the actualized status', async () => {
+    it('should return the match with the updated status', async () => {
       const response = await chai.request(app)
         .patch(`/matches/${id}/finish`);
       
@@ -280,7 +281,8 @@ describe('On the /matches route', () => {
   describe('when trying to update info about a match', () => {
     const id = 1;
     beforeEach(() => {
-      sinon.stub(Match, 'update');
+      sinon.stub(Match, 'findByPk').resolves(inProgressMatchMock as Match);
+      sinon.stub(Match, 'update').resolves([1, [inProgressMatchMock as Match]]);
     });
 
     afterEach(() => {
