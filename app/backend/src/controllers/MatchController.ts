@@ -81,7 +81,6 @@ class MatchController {
       return res.status(StatusCodes.OK).json({ message: 'Finished' });
     } catch (e) {
       console.log(e);
-      console.log('erro do controller');
       throw new CustomError(StatusCodes.INTERNAL_SERVER_ERROR, ErrorMessages.somethingWentWrong);
     }
   }

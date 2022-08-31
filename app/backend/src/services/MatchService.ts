@@ -100,7 +100,6 @@ class MatchService {
       return updated;
     } catch (e) {
       console.log(e);
-      console.log('erro da service');
       throw new CustomError(StatusCodes.INTERNAL_SERVER_ERROR, ErrorMessages.somethingWentWrong);
     }
   }

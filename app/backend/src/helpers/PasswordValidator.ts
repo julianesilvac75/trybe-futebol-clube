@@ -12,7 +12,7 @@ class PasswordValidator {
 
   static validate(login: string, password: string): void {
     const check = Bcrypt.compareSync(login, password);
-    console.log(check);
+
     if (!check) throw new CustomError(StatusCodes.UNAUTHORIZED, ErrorMessages.incorrectField);
   }
 }
