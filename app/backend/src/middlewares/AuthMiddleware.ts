@@ -9,13 +9,16 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const { authorization } = req.headers;
 
     if (!authorization) {
-      return res.status(StatusCodes.UNAUTHORIZED).json({ message: ErrorMessages.tokenNotFound });
+      return res.status(StatusCodes.UNAUTHORIZED).json({ message: ErrorMessages.invalidToken });
     }
 
     const user = TokenValidator.validate(authorization) as JwtPayload;
     console.log(user);
 
-    req.body = user;
+    req.body = {
+      ...req.body,
+      ...user,
+    };
 
     next();
   } catch (e) {
