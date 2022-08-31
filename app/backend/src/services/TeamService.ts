@@ -23,7 +23,7 @@ class TeamService {
       return teams as ITeam[];
     } catch (e) {
       console.log(e);
-      throw new CustomError(StatusCodes.INTERNAL_SERVER_ERROR, ErrorMessages.noTeamsFound);
+      throw new CustomError(StatusCodes.INTERNAL_SERVER_ERROR, ErrorMessages.somethingWentWrong);
     }
   }
 }

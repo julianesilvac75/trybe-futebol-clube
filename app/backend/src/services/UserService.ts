@@ -6,14 +6,14 @@ import TokenValidator from '../helpers/TokenValidator';
 import CustomError from '../helpers/CustomError';
 
 class UserService {
-  static async findOne(email: string) {
+  static async findByEmail(email: string) {
     const user = await User.findOne({ where: { email } });
 
     return user;
   }
 
   static async getRole(email: string) {
-    const user = await this.findOne(email);
+    const user = await this.findByEmail(email);
 
     if (!user) throw new CustomError(StatusCodes.NOT_FOUND, ErrorMessages.userNotFound);
 
@@ -21,7 +21,7 @@ class UserService {
   }
 
   static async login(email: string, password: string) {
-    const user = await this.findOne(email);
+    const user = await this.findByEmail(email);
 
     if (!user) throw new CustomError(StatusCodes.UNAUTHORIZED, ErrorMessages.incorrectField);
 
